@@ -2,3 +2,4 @@ requests
 persiantools
 tqdm
 selenium
+pandas
