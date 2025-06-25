@@ -12,6 +12,8 @@ NEWSPAPERS = [
     "resalat", "ebtekar", "arman", "DonyayeEghtesad", "khorasan", "ghods"
 ]
 
+NEWSPAPERS_WORKING = ["JomhouriEslami", "DonyayeEghtesad"]
+
 # Base URLs
 BASE_VIEWER_URL = "https://www.pishkhan.com/pdfviewer.php?paper={}&date={}"
 
@@ -40,10 +42,12 @@ def download_pdf(paper, persian_date):
 
     viewer_url = BASE_VIEWER_URL.format(paper, date_str)
     try:
-        response = requests.get(viewer_url, headers=HEADERS, allow_redirects=True, timeout=10)
+        response = requests.get(viewer_url, headers=HEADERS, allow_redirects=True, timeout=20)
         if response.history and response.status_code == 200:
             pdf_url = response.url
             pdf_response = requests.get(pdf_url, headers=HEADERS, timeout=10)
+            print(pdf_response.ok, pdf_response.headers.get("Content-Type"))
+            
             if pdf_response.ok and pdf_response.headers.get("Content-Type") == "application/pdf":
                 with open(filename, "wb") as f:
                     f.write(pdf_response.content)
@@ -52,13 +56,14 @@ def download_pdf(paper, persian_date):
                 print(f"[FAIL] PDF not found or invalid content for {paper} {date_str}")
         else:
             print(f"[FAIL] No redirect to PDF for {paper} {date_str}")
+            # print(viewer_url)
     except Exception as e:
         print(f"[ERROR] {paper} {date_str}: {e}")
 
 def scrape_pishkhan(start_date: str, end_date: str):
     dates = list(generate_dates(start_date, end_date))
     for date in tqdm(dates, desc="Scraping dates"):
-        for paper in NEWSPAPERS:
+        for paper in NEWSPAPERS_WORKING:
             for _ in range(3):  # Retry logic
                 try:
                     download_pdf(paper, date)
