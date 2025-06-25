@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 newspapers/
 main.py
+.DS_Store
