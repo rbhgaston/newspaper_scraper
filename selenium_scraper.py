@@ -129,9 +129,9 @@ def scrape_newspapers(start_date: JalaliDate, end_date: JalaliDate):
         
     driver.quit()
 
-# example usage
-# python selenium_scraper.py --start 14040101 --end 14040301
+
 if __name__ == "__main__":
+    # Parse command line arguments
     parser = argparse.ArgumentParser(description="Download Iranian newspapers from Pishkhan.")
     parser.add_argument("--start", required=True, help="Start date in Persian format YYYYMMDD (e.g., 14040101)")
     parser.add_argument("--end", required=True, help="End date in Persian format YYYYMMDD (e.g., 14040301)")
@@ -151,10 +151,6 @@ if __name__ == "__main__":
 
     save_status_calendar(df)
 
-
-# https://www.pishkhan.com/pdfviewer.php?paper=etemaad&date=14040404
-# https://www.pishkhan.com/pdfviewer.php?paper=hamshahri&date=14040404
-## SHARGH
-# https://www.pishkhan.com/pdfviewer.php?paper=Shargh&date=14040322
-# https://www.pishkhan.com/pdfviewer.php?paper=ArmanMeli&date=14040322
+# example usage
+# python selenium_scraper.py --start 14040101 --end 14040301
 
